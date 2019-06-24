@@ -1,26 +1,24 @@
 #include "get_next_line.h"
+#include "libft/libft.h"
 
 int main()
 {
 	int fd;
-	int ret;
-	char buf[BUF_SIZE + 1];
+	char *line;
 
-	fd = open("42", O_RDONLY);
+	fd = open("text", O_RDONLY);
 	if (fd == -1)
 	{
-		printf("open() failed\n");
+		ft_putstr("open() failed\n");
 		return (1);
 	}
-	while ((ret = read(fd, buf, BUF_SIZE)))
+	if (get_next_line(fd, &line))
 	{
-		buf[ret] = '\0';
-		ft_putstr(buf);
-	}
+		ft_putstr(line);
+	}	
 	if (close(fd) == -1)
 	{
-		printf("close() failed\n");
+		ft_putstr("close() failed\n");
 		return (1);
 	}
-	return (0);
 }

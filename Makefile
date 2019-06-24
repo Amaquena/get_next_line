@@ -1,11 +1,10 @@
 NAME = get_next_line.a
-CFILES = *.c
-OFILES = *.o
+CFILES = get_next_line.c
+OFILES = get_next_line.o
 
 $(NAME):
 	@gcc -c -Wall -Wextra -Werror $(CFILES)
-	@ar rcs $(NAME) $(OFILES)
-	
+	@ar rc $(NAME) $(OFILES)
 all: $(NAME)
 clean:
 	@rm -f $(OFILES)
@@ -16,5 +15,5 @@ re: fclean all
 	@echo "fclean / clean / all"
 	@echo "_______________________________________________\n"
 gcc: re
-	@gcc main.c $(NAME)
+	@gcc main.c $(NAME) -L./libft -lft
 	@./a.out
