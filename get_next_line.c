@@ -13,46 +13,48 @@
 #include "get_next_line.h"
 #include "libft/libft.h"
 
-static char *ft_strsubchr(const char *s, unsigned char c)
+static int  ft_strsubchr(char **dst, const char *src, char c)
 {
-    char *str;
-    int i = 0;
+	int i = 0;
+	int count;
 
-    while (s[i] != c)
-        i++;
-    if (!s || !(str = ft_strnew(i)))
-        return (NULL);
-    if (!(ft_strncpy(str, s, i)))
-        return (NULL);
-    return (str);
+	while (src[i] != c)
+		i++;
+	if (!src || !dst){
+		return (0);
+	}
+	
+	return (i);
 }
 
 int get_next_line(const int fd, char **line)
 {
-    int ret;
-    char buf[BUF_SIZE + 1];
-    static char *temp;
+	int ret;
+	int pos;
+	char buf[BUF_SIZE + 1];
+	static char *temp;
 
-    if (!(temp = ft_strnew(1)))
-        return (-1);
-    while ((ret = read(fd, buf, BUF_SIZE)))
-    {
-        buf[ret] = '\0';
-        temp = ft_strjoin(temp, buf);
-        if (ft_strchr(temp, '\n')) {
-            break;
-        }
-    }
-    /* if ret is less than buf_size then there was no more 
-    characters to read from the file. ft_strlen checks if
-    there were any characters read from the file. Prevents
-    segfault if buffer size larger than the contents of 
-    file.*/
-    if (ret < BUF_SIZE && !(ft_strlen(temp))){
-        return (0);
-    }
-    if (!(*line = ft_strsubchr(temp, '\n'))){
-        return (-1);
-    } 
-    return (1);
+	if (!(temp = ft_strnew(1)))
+		return (-1);
+	while ((ret = read(fd, buf, BUF_SIZE)))
+	{
+		buf[ret] = '\0';
+		temp = ft_strjoin(temp, buf);
+		if (ft_strchr(temp, '\n')) {
+			break;
+		}
+	}
+	/* if ret is less than buf_size then there was no more
+	characters to read from the file. ft_strlen checks if
+	there were any characters read from the file. Prevents
+	segfault if buffer size larger than the contents of
+	file.*/
+	if (ret < BUF_SIZE && !(ft_strlen(temp))){
+		return (0);
+	}
+	if (!(pos = ft_strsubchr(line, temp, '\n'))){
+		return (-1);
+	}
+	temp = temp + (pos + 1);
+	return (1);
 }
