@@ -16,17 +16,13 @@ int main()
 	if (get_next_line(fd, &line))
 	{
 		ft_putstr(line);
-		ft_putstr("\nc\n");
+		ft_putchar('\n');
 	}
-	free(line);
-	line = NULL;
 	if (get_next_line(fd, &line1))
 	{
 		ft_putstr(line1);
-		ft_putstr("\nb\n");
+		ft_putchar('\n');
 	}
-	free(line1);
-	line1 = NULL;
 	if (close(fd) == -1)
 	{
 		ft_putstr("close() failed\n");
