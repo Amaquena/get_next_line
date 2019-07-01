@@ -16,14 +16,22 @@
 static int  ft_strsubchr(char **dst, const char *src, char c)
 {
 	int i = 0;
-	int count;
+	char *temp;
 
-	while (src[i] != c)
-		i++;
 	if (!src || !dst){
 		return (0);
 	}
-	
+	while (src[i])
+	{
+		if (src[i] == c)
+			break;
+		i++;
+	}
+	if (src[i] == c)
+	{
+		temp = ft_strsub(src, 0, i);
+		*dst = ft_strjoin(*dst, temp);
+	}
 	return (i);
 }
 
@@ -52,9 +60,14 @@ int get_next_line(const int fd, char **line)
 	if (ret < BUF_SIZE && !(ft_strlen(temp))){
 		return (0);
 	}
-	if (!(pos = ft_strsubchr(line, temp, '\n'))){
-		return (-1);
+	pos = ft_strsubchr(line, temp, '\n');
+
+/*	while (pos > 0)
+	{
+		temp++;
+		pos--;
 	}
+	*/
 	temp = temp + (pos + 1);
 	return (1);
 }
