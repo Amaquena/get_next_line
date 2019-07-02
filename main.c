@@ -1,8 +1,22 @@
 #include "get_next_line.h"
-#include "libft/libft.h"
 
 int main()
 {
+/*
+	int		fd;
+	char	*line;
+
+	
+	fd = open("text", O_RDONLY);
+	if (fd == -1)
+	return (1);
+	while (get_next_line(fd, &line) == 1)
+	{
+		ft_putendl(line);
+		free(line);
+	}
+	close(fd);
+*/
 	int fd;
 	char *line;
 	char *line1;

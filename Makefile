@@ -12,6 +12,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@rm -f a.out
 re: fclean all
+	@clear
 	@echo "fclean / clean / all"
 	@echo "_______________________________________________\n"
 gcc: re
