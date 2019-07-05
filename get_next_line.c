@@ -6,59 +6,77 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/02 16:38:37 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/05 15:06:28 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int ft_strsubchr(char **line, const char *src, char c)
+static int ft_strsubchr(char **line, char *temp, char c)
 {
+	int count;
+	char *str;
 	int i;
-	char *temp;
 
-	i = 0;
-	while (src[i])
+	count = 0;
+	while (temp[count] != '\0')
 	{
-		if (src[i] == c)
+		if (temp[count] == c)
 			break;
+		count++;
+	}
+	str = ft_strnew(count);
+	i = 0;
+	while (i < count)
+	{
+		str[i] = temp[i];
 		i++;
 	}
-	temp = ft_strncpy(*line, src, i);
-	temp = NULL;
-	return (i);
+	*line = str;
+	free(str);
+	return (count);
 }
+
+
 
 int get_next_line(const int fd, char **line)
 {
 	int ret;
+	char buff[BUFF_SIZE + 1];
+//	static char *text;
+	char *temp;
 	int pos;
-	char buf[BUF_SIZE + 1];
-	static char *temp;
+	static t_list *fd_list;
 
-	if (!(temp = ft_strnew(1)))
-		return (-1);
-	if (!(*line = ft_strnew(1)))
-		return (-1);
-	while ((ret = read(fd, buf, BUF_SIZE)))
+	if (fd < 0 || line == NULL ||
+	!(fd_list = (t_list *)ft_memalloc(sizeof(t_list))))
+		return(-1);
+	while ((ret = read(fd, buff, BUFF_SIZE)))
 	{
-		buf[ret] = '\0';
-		temp = ft_strjoin(temp, buf);
-		if (ft_strchr(buf, '\n'))
+		buff[ret] = '\0';
+		if (fd_list->content == NULL) // if (text == NULL)
+			fd_list->content = ft_strdup(buff); // text = ft_strdup(buf);
+		else
 		{
-			break;
+			temp = ft_strjoin(fd_list->content, buff); // fd_list is text
+			fd_list->content = NULL;
+			fd_list->content = temp; // text = temp;
+			temp = NULL;
 		}
+		if (ft_strchr(buff, '\n'))
+			break;
 	}
 	/* if ret is less than buf_size then there was no more
 	characters to read from the file. ft_strlen checks if
 	there were any characters read from the file. Prevents
 	segfault if buffer size larger than the contents of
 	file.*/
-	if (ret < BUF_SIZE && !(ft_strlen(temp)))
-	{
+	if (ret < BUFF_SIZE && !(ft_strlen(fd_list->content)))
 		return (0);
-	}
-	pos = ft_strsubchr(line, temp, '\n');
-	temp += (pos);
+	pos = ft_strsubchr(line, fd_list->content, '\n');
+	ft_putstr("\n--\n");
+	ft_putstr(fd_list->content);
+	ft_putstr("\n^--^\n");
+	fd_list->content += (pos + 1); // fd_list->content is text
 	return (1);
 }
