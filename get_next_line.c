@@ -6,7 +6,7 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/05 15:06:28 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/05 15:38:14 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,23 @@ int get_next_line(const int fd, char **line)
 {
 	int ret;
 	char buff[BUFF_SIZE + 1];
-//	static char *text;
+	static char *text;
 	char *temp;
 	int pos;
-	static t_list *fd_list;
+//	static t_list *fd_list;
 
-	if (fd < 0 || line == NULL ||
-	!(fd_list = (t_list *)ft_memalloc(sizeof(t_list))))
+	if (fd < 0 || line == NULL)
 		return(-1);
 	while ((ret = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[ret] = '\0';
-		if (fd_list->content == NULL) // if (text == NULL)
-			fd_list->content = ft_strdup(buff); // text = ft_strdup(buf);
+		if (text == NULL)
+			text = ft_strdup(buff);
 		else
 		{
-			temp = ft_strjoin(fd_list->content, buff); // fd_list is text
-			fd_list->content = NULL;
-			fd_list->content = temp; // text = temp;
+			temp = ft_strjoin(text, buff);
+			text = NULL;
+			text = temp;
 			temp = NULL;
 		}
 		if (ft_strchr(buff, '\n'))
@@ -71,12 +70,12 @@ int get_next_line(const int fd, char **line)
 	there were any characters read from the file. Prevents
 	segfault if buffer size larger than the contents of
 	file.*/
-	if (ret < BUFF_SIZE && !(ft_strlen(fd_list->content)))
+	if (ret < BUFF_SIZE && !(ft_strlen(text)))
 		return (0);
-	pos = ft_strsubchr(line, fd_list->content, '\n');
-	ft_putstr("\n--\n");
-	ft_putstr(fd_list->content);
-	ft_putstr("\n^--^\n");
-	fd_list->content += (pos + 1); // fd_list->content is text
+	pos = ft_strsubchr(line, text, '\n');
+//	ft_putstr("\n--\n");
+//	ft_putstr(text);
+//	ft_putstr("\n^--^\n");
+	text += (pos + 1);
 	return (1);
 }
