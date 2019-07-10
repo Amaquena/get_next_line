@@ -6,17 +6,20 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/05 17:14:04 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/10 16:50:06 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+#include <stdio.h>
+
+
 static int ft_strsubchr(char **line, char *temp, char c)
 {
-	int count;
+	size_t count;
 	char *str;
-	int i;
+	size_t i;
 
 	count = 0;
 	while (temp[count] != '\0')
@@ -25,15 +28,38 @@ static int ft_strsubchr(char **line, char *temp, char c)
 			break;
 		count++;
 	}
-	str = ft_strnew(count);
-	i = 0;
-	while (i < count)
+//	printf("\n\t\t%s\n", temp);
+	if (temp[count] == '\0')
+	{
+		str = (char *)ft_memalloc(count - 1);
+		//*line = ft_strncpy(str, temp, count);
+		i = 0;
+		while (i < count)
 	{
 		str[i] = temp[i];
 		i++;
 	}
+	str[i] = '\0';
+	}
+	else
+	{
+		str = (char *)ft_memalloc(count);
+		*line = ft_strncpy(str,temp, count);
+		i = 0;
+		while (i < count)
+	{
+		str[i] = temp[i];
+		i++;
+	}
+	str[i] = '\0';
+	}
+	
+	
+//	printf("str   : %s\n", str);
 	*line = str;
-	free(str);
+//	free(str);
+//	printf("2line : %s\n", *line);
+//	str = NULL;
 	return (count);
 }
 
@@ -50,6 +76,7 @@ static t_list *ft_getfile(t_list **file, int fd)
 	}
 	temp = ft_lstnew("\0", fd);
 	ft_lstadd(file, temp);
+	temp = NULL;
 	return (*file);
 }
 
@@ -58,8 +85,8 @@ int get_next_line(const int fd, char **line)
 	int ret;
 	char buff[BUFF_SIZE + 1];
 //	static char *text;
-	char *temp;
-	int pos;
+//	char *temp;
+	int pos = 0;
 	static t_list *fd_list;
 	t_list *curr_file;
 
@@ -75,10 +102,12 @@ int get_next_line(const int fd, char **line)
 			curr_file->content = ft_strdup(buff);
 		else
 		{
-			temp = ft_strjoin(curr_file->content, buff);
-			curr_file->content = NULL;
-			curr_file->content = temp;
-			temp = NULL;
+			curr_file->content = ft_strjoin(curr_file->content, buff);
+			//printf("%s\n", temp);
+		//	curr_file->content = temp;
+			//free(temp);
+		//	temp = NULL;
+
 		}
 		if (ft_strchr(buff, '\n'))
 			break;
@@ -88,12 +117,18 @@ int get_next_line(const int fd, char **line)
 	there were any characters read from the file. Prevents
 	segfault if buffer size larger than the contents of
 	file.*/
+//	printf("file->content: %s\n", curr_file->content);
+	
+	
 	if (ret < BUFF_SIZE && !(ft_strlen(curr_file->content)))
+	{
+	//		printf("line : %s", *line);
 		return (0);
-	pos = ft_strsubchr(line, curr_file->content, '\n');
-//	ft_putstr("\n--\n");
-//	ft_putstr(text);
-//	ft_putstr("\n^--^\n");
+	}
+	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
 	curr_file->content += (pos + 1);
+//	printf("1temp : %s\n", temp);
+//	printf("1line : %s\n", *line);
+//	printf("1curr : %s\n", curr_file->content);
 	return (1);
 }
