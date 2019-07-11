@@ -6,7 +6,7 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/10 16:50:06 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/11 16:17:49 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int ft_strsubchr(char **line, char *temp, char c)
 	if (temp[count] == '\0')
 	{
 		str = (char *)ft_memalloc(count - 1);
-		//*line = ft_strncpy(str, temp, count);
+	//	*line = ft_strncpy(str, temp, count);
 		i = 0;
 		while (i < count)
 	{
@@ -44,7 +44,7 @@ static int ft_strsubchr(char **line, char *temp, char c)
 	else
 	{
 		str = (char *)ft_memalloc(count);
-		*line = ft_strncpy(str,temp, count);
+		//*line = ft_strncpy(str,temp, count);
 		i = 0;
 		while (i < count)
 	{
@@ -52,6 +52,7 @@ static int ft_strsubchr(char **line, char *temp, char c)
 		i++;
 	}
 	str[i] = '\0';
+
 	}
 	
 	
@@ -62,6 +63,42 @@ static int ft_strsubchr(char **line, char *temp, char c)
 //	str = NULL;
 	return (count);
 }
+
+static int readfile(int fd, t_list **curr_list)
+{
+	int ret;
+	char *temp;
+	char buff[BUFF_SIZE + 1];
+
+	while ((ret =  read(fd, buff, BUFF_SIZE)))
+	{
+		if (ret == -1)
+			return (-1);
+		buff[ret] = '\0';
+		if ((*curr_list)->content == NULL)
+			(*curr_list)->content = ft_strdup(buff);
+
+		else
+		{
+			temp = ft_strjoin((*curr_list)->content, buff);
+		//	free((*curr_list)->content);
+			(*curr_list)->content = temp;
+		//	free(temp);
+			temp = NULL;
+		}
+		if (ft_strchr(buff, '\n'))
+			break;
+	}
+	return (ret);
+/*
+	if (ret < BUFF_SIZE && !(ft_strlen((*curr_list)->content)))
+	{
+	//		printf("line : %s", *line);
+		return (0);
+	}
+*/
+}
+
 
 static t_list *ft_getfile(t_list **file, int fd)
 {
@@ -83,8 +120,8 @@ static t_list *ft_getfile(t_list **file, int fd)
 int get_next_line(const int fd, char **line)
 {
 	int ret;
-	char buff[BUFF_SIZE + 1];
-//	static char *text;
+//	char buff[BUFF_SIZE + 1];
+//	static char *text = NULL;
 //	char *temp;
 	int pos = 0;
 	static t_list *fd_list;
@@ -93,7 +130,9 @@ int get_next_line(const int fd, char **line)
 	if (fd < 0 || line == NULL || BUFF_SIZE <= 0)
 		return (-1);
 	curr_file = ft_getfile(&fd_list, fd);
-	while ((ret = read(fd, buff, BUFF_SIZE)))
+	if ((ret = readfile(fd, &curr_file)) == -1)
+		return (-1);
+/*	while ((ret = read(fd, buff, BUFF_SIZE)))
 	{
 		if (ret == -1)
 			return (-1);
@@ -102,29 +141,29 @@ int get_next_line(const int fd, char **line)
 			curr_file->content = ft_strdup(buff);
 		else
 		{
-			curr_file->content = ft_strjoin(curr_file->content, buff);
+			temp = ft_strjoin(curr_file->content, buff);
 			//printf("%s\n", temp);
-		//	curr_file->content = temp;
+			free(curr_file->content);
+			curr_file->content = temp;
 			//free(temp);
-		//	temp = NULL;
-
 		}
 		if (ft_strchr(buff, '\n'))
 			break;
 	}
-	/* if ret is less than buf_size then there was no more
+	 if ret is less than buf_size then there was no more
 	characters to read from the file. ft_strlen checks if
 	there were any characters read from the file. Prevents
 	segfault if buffer size larger than the contents of
-	file.*/
-//	printf("file->content: %s\n", curr_file->content);
-	
-	
+	file.
+	printf("file->content: %s\n", curr_file->content);
+*/
+//	printf("curr :  %s", curr_file->content);
 	if (ret < BUFF_SIZE && !(ft_strlen(curr_file->content)))
 	{
 	//		printf("line : %s", *line);
 		return (0);
 	}
+
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
 	curr_file->content += (pos + 1);
 //	printf("1temp : %s\n", temp);
