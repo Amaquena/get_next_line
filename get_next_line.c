@@ -6,7 +6,7 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/11 16:17:49 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/12 17:07:51 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,38 +29,38 @@ static int ft_strsubchr(char **line, char *temp, char c)
 		count++;
 	}
 //	printf("\n\t\t%s\n", temp);
+	i = 0;
 	if (temp[count] == '\0')
 	{
 		str = (char *)ft_memalloc(count - 1);
-	//	*line = ft_strncpy(str, temp, count);
-		i = 0;
+		//*line = ft_strncpy(str, temp, count);
+		
 		while (i < count)
-	{
-		str[i] = temp[i];
-		i++;
-	}
-	str[i] = '\0';
+		{
+			str[i] = temp[i];
+			i++;
+		}
+	
 	}
 	else
 	{
 		str = (char *)ft_memalloc(count);
-		//*line = ft_strncpy(str,temp, count);
-		i = 0;
+	//	*line = ft_strncpy(str,temp, count);
+		
 		while (i < count)
-	{
-		str[i] = temp[i];
-		i++;
+		{
+			str[i] = temp[i];
+			i++;
+		}
 	}
 	str[i] = '\0';
-
-	}
 	
 	
 //	printf("str   : %s\n", str);
 	*line = str;
 //	free(str);
 //	printf("2line : %s\n", *line);
-//	str = NULL;
+	str = NULL;
 	return (count);
 }
 
@@ -68,24 +68,28 @@ static int readfile(int fd, t_list **curr_list)
 {
 	int ret;
 	char *temp;
+//	char *str;
 	char buff[BUFF_SIZE + 1];
 
-	while ((ret =  read(fd, buff, BUFF_SIZE)))
+//	str = (*curr_list)->content;
+	while ((ret = read(fd, buff, BUFF_SIZE)))
 	{
 		if (ret == -1)
 			return (-1);
 		buff[ret] = '\0';
-		if ((*curr_list)->content == NULL)
-			(*curr_list)->content = ft_strdup(buff);
+	//	if ((*curr_list)->content == NULL)
+	//		(*curr_list)->content = ft_strdup(buff);
 
-		else
-		{
+	//	else
+	//	{
+			temp = (*curr_list)->content;
+			free((*curr_list)->content);
 			temp = ft_strjoin((*curr_list)->content, buff);
-		//	free((*curr_list)->content);
 			(*curr_list)->content = temp;
+		//	free(str);
 		//	free(temp);
-			temp = NULL;
-		}
+		//	temp = NULL;
+	//	}
 		if (ft_strchr(buff, '\n'))
 			break;
 	}
