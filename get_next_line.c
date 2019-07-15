@@ -6,14 +6,12 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/12 17:07:51 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/15 16:32:31 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 #include <stdio.h>
-
 
 static int ft_strsubchr(char **line, char *temp, char c)
 {
@@ -28,39 +26,18 @@ static int ft_strsubchr(char **line, char *temp, char c)
 			break;
 		count++;
 	}
-//	printf("\n\t\t%s\n", temp);
-	i = 0;
 	if (temp[count] == '\0')
-	{
 		str = (char *)ft_memalloc(count - 1);
-		//*line = ft_strncpy(str, temp, count);
-		
-		while (i < count)
-		{
-			str[i] = temp[i];
-			i++;
-		}
-	
-	}
 	else
-	{
 		str = (char *)ft_memalloc(count);
-	//	*line = ft_strncpy(str,temp, count);
-		
-		while (i < count)
-		{
-			str[i] = temp[i];
-			i++;
-		}
+	i = 0;
+	while (i < count)
+	{
+		str[i] = temp[i];
+		i++;
 	}
 	str[i] = '\0';
-	
-	
-//	printf("str   : %s\n", str);
 	*line = str;
-//	free(str);
-//	printf("2line : %s\n", *line);
-	str = NULL;
 	return (count);
 }
 
@@ -82,10 +59,13 @@ static int readfile(int fd, t_list **curr_list)
 
 	//	else
 	//	{
-			temp = (*curr_list)->content;
-			free((*curr_list)->content);
-			temp = ft_strjoin((*curr_list)->content, buff);
-			(*curr_list)->content = temp;
+			//temp = (*curr_list)->content;
+		//	free((*curr_list)->content);
+		//if (((*curr_list)->content) != NULL)
+		
+		temp = ft_strjoin((*curr_list)->content, buff);
+		free((*curr_list)->content);
+		(*curr_list)->content = temp;
 		//	free(str);
 		//	free(temp);
 		//	temp = NULL;
@@ -94,13 +74,6 @@ static int readfile(int fd, t_list **curr_list)
 			break;
 	}
 	return (ret);
-/*
-	if (ret < BUFF_SIZE && !(ft_strlen((*curr_list)->content)))
-	{
-	//		printf("line : %s", *line);
-		return (0);
-	}
-*/
 }
 
 
@@ -160,18 +133,20 @@ int get_next_line(const int fd, char **line)
 	segfault if buffer size larger than the contents of
 	file.
 	printf("file->content: %s\n", curr_file->content);
+
+	printf("curr :  %s", curr_file->content);
 */
-//	printf("curr :  %s", curr_file->content);
 	if (ret < BUFF_SIZE && !(ft_strlen(curr_file->content)))
 	{
-	//		printf("line : %s", *line);
 		return (0);
 	}
-
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
 	curr_file->content += (pos + 1);
-//	printf("1temp : %s\n", temp);
-//	printf("1line : %s\n", *line);
-//	printf("1curr : %s\n", curr_file->content);
+/*
+	ft_bzero(temp, pos);
+	printf("1temp : %s\n", temp);
+	printf("1line : %s\n", *line);
+	printf("1curr : %s\n", curr_file->content);
+*/
 	return (1);
 }
