@@ -12,7 +12,11 @@
 
 #include "libft.h"
 
+<<<<<<< HEAD
 char	*ft_strsub(const char *s, unsigned int start, size_t len)
+=======
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
+>>>>>>> c31d6c9aed0da87c44e12ea0d59ffba1075766b2
 {
 	char *str;
 

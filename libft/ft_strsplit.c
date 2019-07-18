@@ -6,7 +6,11 @@
 /*   By: amaquena <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 16:11:53 by amaquena          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2019/06/24 12:24:53 by amaquena         ###   ########.fr       */
+=======
+/*   Updated: 2019/06/17 17:41:57 by amaquena         ###   ########.fr       */
+>>>>>>> c31d6c9aed0da87c44e12ea0d59ffba1075766b2
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +52,10 @@ char			**ft_strsplit(char const *s, char c)
 {
 	int		j;
 	int		k;
+<<<<<<< HEAD
+=======
+	int		wlen;
+>>>>>>> c31d6c9aed0da87c44e12ea0d59ffba1075766b2
 	int		wcount;
 	char	**str;
 
@@ -57,6 +65,7 @@ char			**ft_strsplit(char const *s, char c)
 	if (!(str = (char **)malloc(sizeof(char *) * wcount + 1)))
 		return (NULL);
 	j = 0;
+<<<<<<< HEAD
 	while (j < wcount)
 	{
 		while (*s == c && *s)
@@ -67,7 +76,39 @@ char			**ft_strsplit(char const *s, char c)
 		while (*s && *s != c)
 			str[j][k++] = *s++;
 		str[j++][k] = '\0';
+=======
+	while (*s != '\0')
+	{
+		while (*s == c)
+			s++;
+		wlen = ft_wordlen(s, c);
+		while (j < wcount && *s != c)
+		{
+			if (!(str[j] = (char *)malloc(sizeof(char) * wlen + 1)))
+				return (NULL);
+			k = 0;
+			while (wlen-- > 0)
+				str[j][k++] = *s++;
+			str[j++][k] = '\0';
+		}
+>>>>>>> c31d6c9aed0da87c44e12ea0d59ffba1075766b2
 	}
 	str[wcount] = NULL;
 	return (str);
 }
+<<<<<<< HEAD
+=======
+/*
+**int main ()
+**{
+**	char **ret;
+**
+**	ret = ft_strsplit("", '*');
+**	if (ret == NULL)
+**		ft_putstr("is NULL");
+**	else
+**		ft_putstr("not NULL");
+**	return (0);
+**}
+*/
+>>>>>>> c31d6c9aed0da87c44e12ea0d59ffba1075766b2
