@@ -6,7 +6,7 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/15 16:32:31 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/18 11:44:40 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,31 +45,20 @@ static int readfile(int fd, t_list **curr_list)
 {
 	int ret;
 	char *temp;
-//	char *str;
 	char buff[BUFF_SIZE + 1];
 
-//	str = (*curr_list)->content;
 	while ((ret = read(fd, buff, BUFF_SIZE)))
 	{
 		if (ret == -1)
 			return (-1);
 		buff[ret] = '\0';
-	//	if ((*curr_list)->content == NULL)
-	//		(*curr_list)->content = ft_strdup(buff);
 
-	//	else
-	//	{
-			//temp = (*curr_list)->content;
-		//	free((*curr_list)->content);
-		//if (((*curr_list)->content) != NULL)
-		
+		//temp = (*curr_list)->content;
+		//free((*curr_list)->content);
 		temp = ft_strjoin((*curr_list)->content, buff);
 		free((*curr_list)->content);
 		(*curr_list)->content = temp;
-		//	free(str);
-		//	free(temp);
-		//	temp = NULL;
-	//	}
+		//free(temp);
 		if (ft_strchr(buff, '\n'))
 			break;
 	}
@@ -97,10 +86,10 @@ static t_list *ft_getfile(t_list **file, int fd)
 int get_next_line(const int fd, char **line)
 {
 	int ret;
-//	char buff[BUFF_SIZE + 1];
 //	static char *text = NULL;
-//	char *temp;
+	char *temp;
 	int pos = 0;
+//	int i = 0;
 	static t_list *fd_list;
 	t_list *curr_file;
 
@@ -141,12 +130,10 @@ int get_next_line(const int fd, char **line)
 		return (0);
 	}
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
-	curr_file->content += (pos + 1);
-/*
-	ft_bzero(temp, pos);
-	printf("1temp : %s\n", temp);
-	printf("1line : %s\n", *line);
-	printf("1curr : %s\n", curr_file->content);
-*/
+	temp = ft_strdup(curr_file->content + (pos + 1));
+	free(curr_file->content);
+	curr_file->content = temp;
+	//curr_file->content += (pos + 1);
+	
 	return (1);
 }
