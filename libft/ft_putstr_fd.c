@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amaquena <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/18 14:00:43 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/12 17:08:17 by amaquena         ###   ########.fr       */
+/*   Created: 2019/06/06 12:55:22 by amaquena          #+#    #+#             */
+/*   Updated: 2019/06/06 12:58:49 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 20
+#include "libft.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "libft/libft.h"
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+void	ft_putstr_fd(const char *str, int fd)
+{
+	if (!str || !fd)
+		return ;
+	while (*str)
+		ft_putchar_fd(*str++, fd);
+}

@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amaquena <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/18 14:00:43 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/12 17:08:17 by amaquena         ###   ########.fr       */
+/*   Created: 2019/05/24 11:31:07 by amaquena          #+#    #+#             */
+/*   Updated: 2019/06/10 16:22:53 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 20
+#include "libft.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include "libft/libft.h"
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned char	chr;
+	int				i;
 
-int	get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	chr = (unsigned char)c;
+	while (s[i] && s[i] != c)
+		i++;
+	if (s[i] == chr)
+		return ((char *)s + i);
+	return (NULL);
+}
