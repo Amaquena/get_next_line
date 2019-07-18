@@ -6,7 +6,7 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/18 11:44:40 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/18 16:02:31 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int readfile(int fd, t_list **curr_list)
 		//temp = (*curr_list)->content;
 		//free((*curr_list)->content);
 		temp = ft_strjoin((*curr_list)->content, buff);
-		free((*curr_list)->content);
+	//	free((*curr_list)->content);
 		(*curr_list)->content = temp;
 		//free(temp);
 		if (ft_strchr(buff, '\n'))
