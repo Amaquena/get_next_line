@@ -27,9 +27,9 @@ static int ft_strsubchr(char **line, char *temp, char c)
 		count++;
 	}
 	if (temp[count] == '\0')
-		str = (char *)ft_memalloc(count - 1);
+		str = (char *)malloc(sizeof(*str) * (count + 1));
 	else
-		str = (char *)ft_memalloc(count);
+		str = (char *)malloc(sizeof(*str) * count + 1);
 	i = 0;
 	while (i < count)
 	{
@@ -56,7 +56,7 @@ static int readfile(int fd, t_list **curr_list)
 		//temp = (*curr_list)->content;
 		//free((*curr_list)->content);
 		temp = ft_strjoin((*curr_list)->content, buff);
-	//	free((*curr_list)->content);
+		free((*curr_list)->content);
 		(*curr_list)->content = temp;
 		//free(temp);
 		if (ft_strchr(buff, '\n'))
