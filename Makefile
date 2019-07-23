@@ -19,4 +19,4 @@ gcc: re
 	@gcc main.c $(NAME) -L./libft -lft
 	@./a.out
 dgcc: re
-	@gcc -g main.c $(CFILES) $(NAME) -L./libft -lft
+	@gcc -g -Wall -Wextra -Werror main.c $(CFILES) $(NAME) -L./libft -lft

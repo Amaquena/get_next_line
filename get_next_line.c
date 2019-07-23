@@ -26,9 +26,9 @@ static int ft_strsubchr(char **line, char *temp, char c)
 			break;
 		count++;
 	}
-	if (temp[count] == '\0')
-		str = (char *)malloc(sizeof(*str) * (count + 1));
-	else
+//	if (temp[count] == '\0')
+//		str = (char *)malloc(sizeof(*str) * (count - 1));
+//	else
 		str = (char *)malloc(sizeof(*str) * count + 1);
 	i = 0;
 	while (i < count)
@@ -52,12 +52,14 @@ static int readfile(int fd, t_list **curr_list)
 		if (ret == -1)
 			return (-1);
 		buff[ret] = '\0';
-
-		//temp = (*curr_list)->content;
-		//free((*curr_list)->content);
-		temp = ft_strjoin((*curr_list)->content, buff);
-		free((*curr_list)->content);
-		(*curr_list)->content = temp;
+//		if ((*curr_list)->content == NULL)
+	//		temp = ft_strdup(buff);
+	//	else
+//		{
+			temp = ft_strjoin((*curr_list)->content, buff);
+			free((*curr_list)->content);
+			(*curr_list)->content = temp;
+	//	}
 		//free(temp);
 		if (ft_strchr(buff, '\n'))
 			break;
@@ -127,13 +129,14 @@ int get_next_line(const int fd, char **line)
 */
 	if (ret < BUFF_SIZE && !(ft_strlen(curr_file->content)))
 	{
+		free(curr_file->content);
 		return (0);
 	}
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
-//	temp = ft_strdup(curr_file->content + (pos + 1));
-//	free(curr_file->content);
-//	curr_file->content = temp;
-	curr_file->content += (pos + 1);
+	temp = ft_strdup(curr_file->content + (pos + 1));
+	free(curr_file->content);
+	curr_file->content = temp;
+//	curr_file->content += (pos + 1);
 	
 	return (1);
 }
