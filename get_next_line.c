@@ -130,10 +130,10 @@ int get_next_line(const int fd, char **line)
 		return (0);
 	}
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
-	temp = ft_strdup(curr_file->content + (pos + 1));
-	free(curr_file->content);
-	curr_file->content = temp;
-	//curr_file->content += (pos + 1);
+//	temp = ft_strdup(curr_file->content + (pos + 1));
+//	free(curr_file->content);
+//	curr_file->content = temp;
+	curr_file->content += (pos + 1);
 	
 	return (1);
 }
