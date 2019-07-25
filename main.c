@@ -8,13 +8,13 @@ int main()
 	char	*line;
 
 	
-	fd = open("large_file.txt", O_RDONLY);
+	fd = open("text2.txt", O_RDONLY);
 	if (fd == -1)
 		return (1);
 	while (get_next_line(fd, &line) == 1)
 	{
+	//	printf("line: %s\t\taddress: %p\n\n", line, &line);
 		printf("%s\n", line);
-		//free(line);
 	}
 /*
 	int fd;

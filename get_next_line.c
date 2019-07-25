@@ -6,7 +6,7 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/18 16:02:31 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/07/22 15:57:59 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int ft_strsubchr(char **line, char *temp, char c)
 	}
 	str[i] = '\0';
 	*line = str;
+//	printf("line2: %s\t\taddress: %p\n", *line, line);
+//	printf("str: %s\t\taddress: %p\n", str, &str);
 	return (count);
 }
 
@@ -82,14 +84,26 @@ static t_list *ft_getfile(t_list **file, int fd)
 	temp = NULL;
 	return (*file);
 }
+/* static char *ft_strdupline(const char *str){
+	char *new;
+	int i;
 
+	new = (char *)malloc(sizeof(char) * ft_strlen(str));
+	i = 0;
+	while (str[i] != '\0')
+	{
+		new[i] = str[i];
+		i++;
+	}
+	printf("new: %s\n", new);
+	return(new);
+}*/
 int get_next_line(const int fd, char **line)
 {
 	int ret;
 //	static char *text = NULL;
-	char *temp;
+//	char *temp;
 	int pos = 0;
-//	int i = 0;
 	static t_list *fd_list;
 	t_list *curr_file;
 
@@ -130,10 +144,14 @@ int get_next_line(const int fd, char **line)
 		return (0);
 	}
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
-	temp = ft_strdup(curr_file->content + (pos + 1));
-	free(curr_file->content);
-	curr_file->content = temp;
-	//curr_file->content += (pos + 1);
-	
+//	temp = ft_strdup(curr_file->content + (pos + 1));
+//	printf("curr: %s\n", curr_file->content);
+//	printf("temp: %s\n", temp);
+//	free(curr_file->content);
+//	curr_file->content = temp;
+//	printf("temp: %s\n", temp);
+//	printf("curr2: %s\n", curr_file->content);
+//	printf("line1: %s\t\taddress: %p\n", *line, line);
+	curr_file->content += (pos + 1);
 	return (1);
 }
