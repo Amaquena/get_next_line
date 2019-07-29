@@ -52,14 +52,14 @@ static int readfile(int fd, t_list **curr_list)
 		if (ret == -1)
 			return (-1);
 		buff[ret] = '\0';
-//		if ((*curr_list)->content == NULL)
-	//		temp = ft_strdup(buff);
-	//	else
-//		{
+		if ((*curr_list)->content == NULL)
+			temp = ft_strdup(buff);
+		else
+		{
 			temp = ft_strjoin((*curr_list)->content, buff);
 			free((*curr_list)->content);
 			(*curr_list)->content = temp;
-	//	}
+		}
 		//free(temp);
 		if (ft_strchr(buff, '\n'))
 			break;
@@ -81,7 +81,6 @@ static t_list *ft_getfile(t_list **file, int fd)
 	}
 	temp = ft_lstnew("\0", fd);
 	ft_lstadd(file, temp);
-	temp = NULL;
 	return (*file);
 }
 
@@ -130,6 +129,7 @@ int get_next_line(const int fd, char **line)
 	if (ret < BUFF_SIZE && !(ft_strlen(curr_file->content)))
 	{
 		free(curr_file->content);
+		free(curr_file);
 		return (0);
 	}
 	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
