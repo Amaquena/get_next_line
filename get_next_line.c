@@ -6,72 +6,63 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/07/22 15:57:59 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/08/02 16:06:58 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
+#include <string.h>
 
-static int ft_strsubchr(char **line, char *temp, char c)
+static char		*ft_strsubchr(char **line, char *temp, char c)
 {
-	size_t count;
-	char *str;
-	size_t i;
+	size_t		count;
+	char		*str;
 
 	count = 0;
 	while (temp[count] != '\0')
 	{
 		if (temp[count] == c)
-			break;
+			break ;
 		count++;
 	}
-	if (temp[count] == '\0')
-		str = (char *)ft_memalloc(count - 1);
-	else
-		str = (char *)ft_memalloc(count);
-	i = 0;
-	while (i < count)
+	if (temp[count] == '\n')
 	{
-		str[i] = temp[i];
-		i++;
+		*line = ft_strsub(temp, 0, count);
+		str = ft_strdup(&temp[count + 1]);
 	}
-	str[i] = '\0';
-	*line = str;
-//	printf("line2: %s\t\taddress: %p\n", *line, line);
-//	printf("str: %s\t\taddress: %p\n", str, &str);
-	return (count);
+	if (temp[count] == '\0')
+	{
+		*line = ft_strsub(temp, 0, count);
+		str = ft_strnew(0);
+	}
+	return (str);
 }
 
-static int readfile(int fd, t_list **curr_list)
+static	int		readfile(int fd, t_list **curr_list)
 {
-	int ret;
-	char *temp;
-	char buff[BUFF_SIZE + 1];
+	int		ret;
+	char	*temp;
+	char	buff[BUFF_SIZE + 1];
 
-	while ((ret = read(fd, buff, BUFF_SIZE)))
+	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
 	{
-		if (ret == -1)
-			return (-1);
 		buff[ret] = '\0';
-
-		//temp = (*curr_list)->content;
-		//free((*curr_list)->content);
 		temp = ft_strjoin((*curr_list)->content, buff);
-	//	free((*curr_list)->content);
+		free((*curr_list)->content);
 		(*curr_list)->content = temp;
-		//free(temp);
 		if (ft_strchr(buff, '\n'))
-			break;
+			break ;
 	}
+	if (ret < 0)
+		return (-1);
 	return (ret);
 }
 
-
-static t_list *ft_getfile(t_list **file, int fd)
+static	t_list	*ft_getfile(t_list **file, int fd)
 {
-	t_list *temp;
-	
+	t_list	*temp;
+
 	temp = *file;
 	while (temp)
 	{
@@ -84,74 +75,25 @@ static t_list *ft_getfile(t_list **file, int fd)
 	temp = NULL;
 	return (*file);
 }
-/* static char *ft_strdupline(const char *str){
-	char *new;
-	int i;
 
-	new = (char *)malloc(sizeof(char) * ft_strlen(str));
-	i = 0;
-	while (str[i] != '\0')
-	{
-		new[i] = str[i];
-		i++;
-	}
-	printf("new: %s\n", new);
-	return(new);
-}*/
-int get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
-	int ret;
-//	static char *text = NULL;
-//	char *temp;
-	int pos = 0;
-	static t_list *fd_list;
-	t_list *curr_file;
+	int				ret;
+	char			*temp;
+	static t_list	*fd_list;
+	t_list			*curr_file;
 
 	if (fd < 0 || line == NULL || BUFF_SIZE <= 0)
 		return (-1);
 	curr_file = ft_getfile(&fd_list, fd);
-	if ((ret = readfile(fd, &curr_file)) == -1)
+	if ((ret = readfile(fd, &curr_file)) < 0)
 		return (-1);
-/*	while ((ret = read(fd, buff, BUFF_SIZE)))
-	{
-		if (ret == -1)
-			return (-1);
-		buff[ret] = '\0';
-		if (curr_file->content == NULL)
-			curr_file->content = ft_strdup(buff);
-		else
-		{
-			temp = ft_strjoin(curr_file->content, buff);
-			//printf("%s\n", temp);
-			free(curr_file->content);
-			curr_file->content = temp;
-			//free(temp);
-		}
-		if (ft_strchr(buff, '\n'))
-			break;
-	}
-	 if ret is less than buf_size then there was no more
-	characters to read from the file. ft_strlen checks if
-	there were any characters read from the file. Prevents
-	segfault if buffer size larger than the contents of
-	file.
-	printf("file->content: %s\n", curr_file->content);
-
-	printf("curr :  %s", curr_file->content);
-*/
-	if (ret < BUFF_SIZE && !(ft_strlen(curr_file->content)))
+	if (!ret && !(ft_strlen(curr_file->content)))
 	{
 		return (0);
 	}
-	pos = ft_strsubchr(line, (char *)curr_file->content, '\n');
-//	temp = ft_strdup(curr_file->content + (pos + 1));
-//	printf("curr: %s\n", curr_file->content);
-//	printf("temp: %s\n", temp);
-//	free(curr_file->content);
-//	curr_file->content = temp;
-//	printf("temp: %s\n", temp);
-//	printf("curr2: %s\n", curr_file->content);
-//	printf("line1: %s\t\taddress: %p\n", *line, line);
-	curr_file->content += (pos + 1);
+	temp = ft_strsubchr(line, (char *)curr_file->content, '\n');
+	free(curr_file->content);
+	curr_file->content = temp;
 	return (1);
 }

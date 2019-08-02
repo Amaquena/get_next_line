@@ -6,7 +6,7 @@
 /*   By: amaquena <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 16:11:53 by amaquena          #+#    #+#             */
-/*   Updated: 2019/06/17 17:41:57 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/06/24 12:24:53 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ char			**ft_strsplit(char const *s, char c)
 {
 	int		j;
 	int		k;
-	int		wlen;
 	int		wcount;
 	char	**str;
 
@@ -58,34 +57,17 @@ char			**ft_strsplit(char const *s, char c)
 	if (!(str = (char **)malloc(sizeof(char *) * wcount + 1)))
 		return (NULL);
 	j = 0;
-	while (*s != '\0')
+	while (j < wcount)
 	{
-		while (*s == c)
+		while (*s == c && *s)
 			s++;
-		wlen = ft_wordlen(s, c);
-		while (j < wcount && *s != c)
-		{
-			if (!(str[j] = (char *)malloc(sizeof(char) * wlen + 1)))
-				return (NULL);
-			k = 0;
-			while (wlen-- > 0)
-				str[j][k++] = *s++;
-			str[j++][k] = '\0';
-		}
+		if (!(str[j] = (char *)malloc(sizeof(char) * ft_wordlen(s, c) + 1)))
+			return (NULL);
+		k = 0;
+		while (*s && *s != c)
+			str[j][k++] = *s++;
+		str[j++][k] = '\0';
 	}
 	str[wcount] = NULL;
 	return (str);
 }
-/*
-**int main ()
-**{
-**	char **ret;
-**
-**	ret = ft_strsplit("", '*');
-**	if (ret == NULL)
-**		ft_putstr("is NULL");
-**	else
-**		ft_putstr("not NULL");
-**	return (0);
-**}
-*/
