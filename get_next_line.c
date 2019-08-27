@@ -6,12 +6,11 @@
 /*   By: amaquena <amaquena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/18 14:00:44 by amaquena          #+#    #+#             */
-/*   Updated: 2019/08/02 16:06:58 by amaquena         ###   ########.fr       */
+/*   Updated: 2019/08/12 15:26:26 by amaquena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 #include <string.h>
 
 static char		*ft_strsubchr(char **line, char *temp, char c)
@@ -54,8 +53,6 @@ static	int		readfile(int fd, t_list **curr_list)
 		if (ft_strchr(buff, '\n'))
 			break ;
 	}
-	if (ret < 0)
-		return (-1);
 	return (ret);
 }
 
@@ -80,10 +77,12 @@ int				get_next_line(const int fd, char **line)
 {
 	int				ret;
 	char			*temp;
+	char			buff[BUFF_SIZE + 1];
 	static t_list	*fd_list;
 	t_list			*curr_file;
 
-	if (fd < 0 || line == NULL || BUFF_SIZE <= 0)
+	if (read(fd, buff, 0) < 0 || fd < 0 || fd <= -2147483648 ||
+			fd >= 2147483647 || !line || BUFF_SIZE <= 0)
 		return (-1);
 	curr_file = ft_getfile(&fd_list, fd);
 	if ((ret = readfile(fd, &curr_file)) < 0)
