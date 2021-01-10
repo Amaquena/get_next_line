@@ -38,6 +38,8 @@ The project had bonus requirements that were not necessary for it's completion, 
 
 To achieve these bonus points, I used the Linked List Data Structure and declared it as a static variable. The linked list had 2 data parts, one for the file discriptor and the second to store what was read from the reading buffer.
 
+- - - -
+
 #### Simple usage
 - Create a main.c. E.g.:
 ``` C
