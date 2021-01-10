@@ -62,6 +62,6 @@ int main()
 	}
 ```
 - Run `make gcc`
-    - The Makefile is already predine to complie and run the program.
+    - The Makefile is already predefined to compile and run the program.
 
 **for a more detailed desciption of the task refer to the pdf in the resource folder.**
