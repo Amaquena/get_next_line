@@ -4,6 +4,7 @@ Get_next_line was a project that focused on memory management and file manipulat
 
 ## Objective
 I was tasked to create a function that reads a single line from a file and returns the result. The project had a few restriction and specifications; these were set to better enforce learning and understanding of the fundamentals of C.
+
 **NOTE: A "line" is a succession of characters that ends with '\n' (ascii code: 0x0a) or End Of File (EOF)**
 
 ### General instructions
